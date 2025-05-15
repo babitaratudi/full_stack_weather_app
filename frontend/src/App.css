@@ -1,0 +1,148 @@
+/* Header Styles */
+.app-title {
+  font-size: 3rem;
+  color: #1976d2; /* Material Design blue */
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* Subtle shadow for text */
+}
+
+/* Search Container */
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  gap: 10px;
+}
+
+.city-input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #90caf9; /* Light blue border */
+  border-radius: 5px;
+  width: 300px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.city-input:focus {
+  border-color: #1976d2; /* Material Design blue */
+  box-shadow: 0 0 8px rgba(25, 118, 210, 0.5); /* Blue glow on focus */
+}
+
+.search-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #1976d2; /* Material Design blue */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.search-button:hover {
+  background-color: #1565c0; /* Darker blue on hover */
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+/* Weather Table */
+.weather-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.weather-table th,
+.weather-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.weather-table th {
+  background-color: #1976d2; /* Material Design blue */
+  color: white;
+  font-weight: bold;
+}
+
+.weather-table td {
+  background-color: #f5f5f5; /* Light gray for table cells */
+}
+
+/* Make High and Low labels bold */
+.weather-table td p {
+  font-weight: bold;
+  margin: 5px 0; /* Add spacing between lines */
+}
+
+.weather-table td ul {
+  font-weight: bold;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.weather-table td ul li {
+  margin: 5px 0;
+}
+
+/* Home and Forecast Containers */
+.home-container,
+.forecast-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.back-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #1565c0;
+}
+
+/* Error Container */
+.error-container {
+  margin-top: 20px;
+  color: #d32f2f; /* Red for error text */
+}
+
+.error-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.suggestions {
+  margin-top: 10px;
+}
+
+.suggestions p {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.suggestions ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestion-item {
+  cursor: pointer;
+  color: #1976d2; /* Blue for suggestions */
+  text-decoration: underline;
+}
+
+.suggestion-item:hover {
+  color: #1565c0; /* Darker blue on hover */
+}

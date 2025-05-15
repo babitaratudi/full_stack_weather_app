@@ -1,0 +1,29 @@
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body Styles */
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  background: linear-gradient(to bottom, #87ceeb, #e3f2fd); /* Light blue gradient */
+  color: #333;
+  display: flex; /* Use flexbox to center content */
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+  height: 100vh; /* Full viewport height */
+}
+
+/* Root Container */
+#root {
+  max-width: 800px;
+  width: 100%;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow for better visibility */
+  background: #ffffff; /* Clean white background */
+  border-radius: 15px; /* Rounded corners for a modern look */
+  border: 1px solid #e0e0e0; /* Subtle border for better definition */
+}
