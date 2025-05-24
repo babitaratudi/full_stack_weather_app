@@ -2,6 +2,10 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import requests
 import os
+from dotenv import load_dotenv
+from flask import send_from_directory
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -70,5 +74,14 @@ def api():
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
 
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_frontend(path):
+    if path != "" and os.path.exists(os.path.join('static', path)):
+        return send_from_directory('static', path)
+    else:
+        return send_from_directory('static', 'index.html')
+        
 if __name__ == '__main__':
     app.run(debug=True)
