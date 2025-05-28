@@ -13,6 +13,7 @@ COPY backend /app
 # Copy frontend code and build it
 COPY frontend /frontend
 WORKDIR /frontend
+RUN npm config set registry https://registry.npmjs.org/
 RUN npm install && npm run build
 
 # Move frontend build to backend static folder
