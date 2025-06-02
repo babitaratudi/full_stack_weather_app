@@ -19,7 +19,8 @@ def api():
 
     if not city:
         return jsonify({"error": "City name is required"}), 400
-
+    else:
+        print(f"Received city: {city}")
     try:
         # Fetch weather data
         response = requests.get(
@@ -57,10 +58,14 @@ def api():
                 daily_summary[date]["high"] = max(daily_summary[date]["high"], temp_high)
                 daily_summary[date]["low"] = min(daily_summary[date]["low"], temp_low)
 
+            print(f"Processing date: {date}, High: {temp_high}, Low: {temp_low}, Weather: {weather}")
+
             if "Rain" in weather:
                 daily_summary[date]["conditions"].add("Rain is expected, Please carry Umbrella")
             if temp_high > 40:
                 daily_summary[date]["conditions"].add("Temerature is more than 40, Use sunscreen lotion")
+
+            print(f"Updated daily summary for {date}: {daily_summary[date]}")
 
         result = {
             date: {
