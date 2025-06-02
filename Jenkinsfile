@@ -14,13 +14,13 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        sh 'docker build -t weather-app .'
+        bat 'docker build -t weather-app .'
       }
     }
 
     stage('Trigger Render Deploy') {
       steps {
-        sh 'curl -X POST "$RENDER_DEPLOY_HOOK_URL"'
+        bat 'curl -X POST "$RENDER_DEPLOY_HOOK_URL"'
       }
     }
   }
