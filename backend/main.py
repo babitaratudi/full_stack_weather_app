@@ -58,9 +58,9 @@ def api():
                 daily_summary[date]["low"] = min(daily_summary[date]["low"], temp_low)
 
             if "Rain" in weather:
-                daily_summary[date]["conditions"].add("Carry umbrella")
+                daily_summary[date]["conditions"].add("Rain is expected, Please carry Umbrella")
             if temp_high > 40:
-                daily_summary[date]["conditions"].add("Use sunscreen lotion")
+                daily_summary[date]["conditions"].add("Temerature is more than 40, Use sunscreen lotion")
 
         result = {
             date: {
