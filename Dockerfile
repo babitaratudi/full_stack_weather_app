@@ -4,24 +4,32 @@ FROM python:3.10-slim
 # Set work directory
 WORKDIR /app
 
-# Install Node.js and npm
+# Install Node.js and npm (for frontend build)
 RUN apt-get update && apt-get install -y nodejs npm && rm -rf /var/lib/apt/lists/*
 
-# Copy backend code
-COPY backend /app
+# Copy and install backend dependencies first (leverage Docker cache)
+COPY backend/requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy frontend code and build it
-COPY frontend /frontend
+# Copy and install frontend dependencies first (leverage Docker cache)
+COPY frontend/package.json frontend/package-lock.json /frontend/
 WORKDIR /frontend
 RUN npm config set registry https://registry.npmjs.org/
-RUN npm install && npm run build
+RUN npm install
+
+# Copy the rest of the backend and frontend code
+COPY backend /app
+COPY frontend /frontend
+
+# Build frontend
+WORKDIR /frontend
+RUN npm run build
 
 # Move frontend build to backend static folder
 RUN mkdir -p /app/static && cp -r dist/* /app/static/
 
-# Install backend dependencies
+# Set workdir back to backend
 WORKDIR /app
-RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose port
 EXPOSE 5000

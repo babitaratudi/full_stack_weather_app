@@ -1,0 +1,31 @@
+# Ignore Python cache and virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+.env
+venv/
+.env.*
+
+# Ignore Node modules and build artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+node_modules/
+dist/
+build/
+
+# Ignore OS and editor files
+.DS_Store
+Thumbs.db
+
+# Ignore git and other VCS
+.git
+.gitignore
+
+# Ignore test and log files
+*.log
+*.coverage
+coverage/
+*.egg-info/
