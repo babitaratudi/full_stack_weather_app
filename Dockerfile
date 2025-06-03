@@ -12,7 +12,7 @@ COPY backend/requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy and install frontend dependencies first (leverage Docker cache)
-COPY frontend/package.json frontend/package-lock.json /frontend/
+COPY frontend/package.json /frontend/
 WORKDIR /frontend
 RUN npm config set registry https://registry.npmjs.org/
 RUN npm install
