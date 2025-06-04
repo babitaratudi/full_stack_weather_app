@@ -64,6 +64,15 @@ def api():
                 daily_summary[date]["conditions"].add("Rain is expected, Please carry Umbrella")
             if temp_high > 40:
                 daily_summary[date]["conditions"].add("Temerature is more than 40, Use sunscreen lotion")
+            if temp_low < 10:
+                daily_summary[date]["conditions"].add("It's cold, wear warm clothes")
+            # Add wind condition
+            wind_speed = entry.get("wind", {}).get("speed", 0)
+            if wind_speed > 10:
+                daily_summary[date]["conditions"].add("It’s too windy, watch out!")
+            # Add thunderstorm condition
+            if "Thunderstorm" in weather:
+                daily_summary[date]["conditions"].add("Don’t step out! A Storm is brewing!")
 
             print(f"Updated daily summary for {date}: {daily_summary[date]}")
 
