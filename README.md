@@ -1,6 +1,6 @@
 # 🌦️ Full Stack Weather Forecast App
 
-A full stack web app that fetches and displays a 3-day weather forecast using the OpenWeatherMap API. Built with **React** (frontend), **Flask** (backend), and deployed using **Docker** and **Render**.
+A full stack web app that fetches and displays a 3-day weather forecast using the OpenWeatherMap API. Built with **React** (frontend), **Flask** (backend), and deployed using **Docker**, **Jenkins**, and **Render**.
 
 ---
 
@@ -28,6 +28,13 @@ A full stack web app that fetches and displays a 3-day weather forecast using th
 - Flask-Caching
 - python-dotenv
 - requests
+- pytest
+- pytest-cov
+
+### **CI/CD & Deployment**
+- Jenkins (automated build & deployment)
+- Docker (containerization)
+- Render (cloud hosting)
 
 ---
 
@@ -38,7 +45,9 @@ full_stack_weather_app/
 ├── backend/
 │   ├── main.py
 │   ├── requirements.txt
-│   └── .env
+│   ├── .env
+│   └── tests/
+│       └── test_api.py
 ├── frontend/
 │   ├── src/
 │   │   ├── App.jsx
@@ -52,6 +61,7 @@ full_stack_weather_app/
 │   │       └── Forecast.jsx
 │   └── package.json
 ├── Dockerfile
+├── Jenkinsfile
 └── ...
 ```
 
@@ -96,6 +106,54 @@ DEBUG=True
 
 ---
 
+## ⚙️ How It Works
+
+1. **Frontend (React):**
+   - User enters a city name in the search bar.
+   - The frontend calls the backend `/api` endpoint with the city name.
+
+2. **Backend (Flask):**
+   - Receives the city name, fetches the 3-day weather forecast from OpenWeatherMap.
+   - Returns the forecast, including:
+     - Temperature highs/lows
+     - Weather conditions (e.g., rain, sun)
+     - Suggestions:
+       - "Carry umbrella" if rain is expected
+       - "Use sunscreen lotion" if temperature > 40°C
+
+3. **Frontend displays** the forecast and suggestions to the user.
+
+---
+
+
+## 🔄 CI/CD & Deployment Flow
+
+1. **Code Push:**  
+   When you push code to GitHub, a webhook triggers Jenkins automatically.
+
+2. **Jenkins Pipeline:**  
+   - Jenkins pulls the latest code.
+   - Builds the Docker image using the Dockerfile.
+   - Runs tests (see below).
+   - Deploys the new Docker image to Render using a deploy hook.
+
+3. **Render:**  
+   - Hosts the latest version of your app.
+   - Serves both frontend and backend from the Docker container.
+
+---
+
+## 🧪 Testing
+
+- We have covered **3 backend test cases using pytest**:
+  1. **No city provided:** Returns a 400 error.
+  2. **City not found:** Returns a 404 error with city suggestions.
+  3. **Successful forecast:** Returns weather data and checks for rain and high temperature advice.
+
+You can find these tests in `backend/tests/test_api.py`.
+
+---
+
 ## 🐳 Docker (Build & Deploy Overview)
 
 - **FROM python:3.10-slim**: Use a lightweight Python image as the base.
@@ -120,8 +178,10 @@ DEBUG=True
    - Render auto-detects your Dockerfile.
    - Set environment variables (`OPENWEATHERMAP_API_KEY`, etc.) in the Render dashboard.
    - Leave build and start commands blank (Dockerfile is used).
-3. **Auto Deploy:**  
-   Every push to your main branch triggers an automatic build and deployment on Render.
+3. **Jenkins** (connected via webhook) automatically builds and deploys your app:
+   - Builds Docker image
+   - Runs tests
+   - Deploys to Render using the deploy hook
 4. **Access your app:**  
    Visit the public Render URL provided after deployment.
 
