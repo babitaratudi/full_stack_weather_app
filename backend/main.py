@@ -3,7 +3,6 @@ from flask_cors import CORS
 import requests
 import os
 from dotenv import load_dotenv
-from flask import send_from_directory
 import re
 
 load_dotenv()
