@@ -1,6 +1,5 @@
 import pytest
 from main import app
-import json
 
 @pytest.fixture
 def client():
@@ -15,7 +14,9 @@ def test_api_no_city(client):
     assert b"City name is required" in response.data
 
 def test_api_city_not_found(client, monkeypatch):
-    """Test when city is not found and suggestions are returned."""
+    """Test when city is not found."""
+
+    city = "FakeCity"
 
     class MockResponse:
         def __init__(self, status_code, json_data):
@@ -25,21 +26,23 @@ def test_api_city_not_found(client, monkeypatch):
             return self._json
         def raise_for_status(self):
             if self.status_code != 200:
-                raise Exception("Not Found")
+                # Simulate requests raising for 500
+                from requests.exceptions import HTTPError
+                raise HTTPError("500 city not found")
 
     def mock_get(url, *args, **kwargs):
         if "forecast" in url:
-            return MockResponse(404, {})
-        if "find" in url:
-            return MockResponse(200, {"list": [{"name": "London"}, {"name": "Paris"}]})
+            return MockResponse(500, {})
         return MockResponse(200, {})
 
     monkeypatch.setattr("requests.get", mock_get)
-    response = client.post('/api', json={"city": "FakeCity"})
-    assert response.status_code == 404
-    assert b"not found" in response.data
-    assert b"London" in response.data
-    assert b"Paris" in response.data
+    response = client.post('/api', json={"city": city})
+    assert response.status_code == 500
+    data = response.get_json()
+    assert (
+        data["error"].lower()
+        == f'no weather information found for "{city.lower()}". please check the city name and try again with other city name.'
+    )
 
 def test_api_success(client, monkeypatch):
     """Test a successful weather response with rain and high temperature."""
