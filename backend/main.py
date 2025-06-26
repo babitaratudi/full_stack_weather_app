@@ -20,6 +20,7 @@ def api():
     # Input validation: city must contain only letters (no digits, no spaces)
     if not city:
         return jsonify({"error": "City name is required"}), 400
+        
     if not re.match(r"^[A-Za-z]+$", city):
         return jsonify({"error": "City name must contain only letters (no digits or spaces)."}), 400
 
