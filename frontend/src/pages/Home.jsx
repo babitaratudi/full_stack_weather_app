@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "../components/SearchBar";
 
 const Home = ({ setWeatherData }) => {
   const [city, setCity] = useState("");
   const [error, setError] = useState(null);
-  const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
 
   const fetchWeather = async () => {
@@ -20,56 +20,26 @@ const Home = ({ setWeatherData }) => {
       if (!response.ok) {
         const errorData = await response.json();
         setError(errorData.error);
-        setSuggestions(errorData.suggestions || []);
         return;
       }
 
       const data = await response.json();
-      setWeatherData(data); // Pass data to parent state
+      setWeatherData(data);
       setError(null);
-      setSuggestions([]);
-      navigate("/forecast"); // Navigate to the forecast page
+      navigate("/forecast");
     } catch (err) {
       console.error(err);
       setError("An error occurred while fetching weather data.");
-      setSuggestions([]);
     }
   };
 
   return (
     <div className="home-container">
       <h1 className="app-title">Weather App</h1>
-      <div className="search-container">
-        <input
-          type="text"
-          className="city-input"
-          placeholder="Enter city name"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-        />
-        <button className="search-button" onClick={fetchWeather}>
-          Search
-        </button>
-      </div>
+      <SearchBar city={city} setCity={setCity} onSearch={fetchWeather}/>
       {error && (
         <div className="error-container">
           <p className="error-text">{error}</p>
-          {suggestions.length > 0 && (
-            <div className="suggestions">
-              <p>Did you mean:</p>
-              <ul>
-                {suggestions.map((suggestion, index) => (
-                  <li
-                    key={index}
-                    className="suggestion-item"
-                    onClick={() => setCity(suggestion)}
-                  >
-                    {suggestion}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
       )}
     </div>

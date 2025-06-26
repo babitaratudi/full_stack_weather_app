@@ -20,30 +20,7 @@ const Forecast = ({ weatherData }) => {
   return (
     <div className="forecast-container">
       <h1 className="app-title">Weather Forecast</h1>
-      <table className="weather-table">
-        <thead>
-          <tr>
-            {Object.keys(weatherData).map((date) => (
-              <th key={date}>{date}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            {Object.keys(weatherData).map((date) => (
-              <td key={date}>
-                <p>High: {weatherData[date]?.high?.toFixed(2)}°C</p>
-                <p>Low: {weatherData[date]?.low?.toFixed(2)}°C</p>
-                <ul>
-                  {weatherData[date]?.conditions?.map((condition, index) => (
-                    <li key={index}>{condition}</li>
-                  ))}
-                </ul>
-              </td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
+      <WeatherTable weatherData={weatherData} />
       <button className="back-button" onClick={() => navigate("/home")}>
         Back to Home
       </button>

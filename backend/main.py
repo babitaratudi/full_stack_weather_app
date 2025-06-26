@@ -4,6 +4,7 @@ import requests
 import os
 from dotenv import load_dotenv
 from flask import send_from_directory
+import re
 
 load_dotenv()
 
@@ -17,26 +18,20 @@ def api():
     data = request.get_json()
     city = data.get("city")
 
+    # Input validation: city must contain only letters (no digits, no spaces)
     if not city:
         return jsonify({"error": "City name is required"}), 400
+    if not re.match(r"^[A-Za-z]+$", city):
+        return jsonify({"error": "City name must contain only letters (no digits or spaces)."}), 400
+
     else:
         print(f"Received city: {city}")
     try:
         # Fetch weather data
         response = requests.get(
-            f'https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={apiKey}&units=metric'
+            f'https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={apiKey}&units=metric', 
+            timeout=60 # timeout in seconds
         )
-        if response.status_code == 404:
-            # If city not found, fetch suggestions
-            suggestion_response = requests.get(
-                f'https://api.openweathermap.org/data/2.5/find?q={city}&appid={apiKey}&units=metric'
-            )
-            suggestions = suggestion_response.json().get("list", [])
-            suggested_cities = [item["name"] for item in suggestions]
-            return jsonify({
-                "error": f"City '{city}' not found.",
-                "suggestions": suggested_cities
-            }), 404
 
         response.raise_for_status()
         forecast = response.json()["list"]
@@ -85,17 +80,14 @@ def api():
             for date in list(daily_summary.keys())[:3]
         }
         return jsonify(result)
-    except requests.exceptions.RequestException as e:
-        return jsonify({"error": str(e)}), 500
+    except requests.exceptions.Timeout:
+        return jsonify({"error": "Weather service timed out. Please try again later."}), 504
+    except requests.exceptions.RequestException:
+        return jsonify({"error": f"No weather information found for \"{city}\". Please check the city name and try again with other city name."}), 500
 
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({"message": "Weather API is running"}), 200
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve_frontend(path):
-    if path != "" and os.path.exists(os.path.join('static', path)):
-        return send_from_directory('static', path)
-    else:
-        return send_from_directory('static', 'index.html')
-        
 if __name__ == '__main__':
     app.run(debug=True)

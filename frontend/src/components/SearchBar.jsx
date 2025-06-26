@@ -1,12 +1,18 @@
-import React from 'react';
+import React from "react";
 
-function SearchBar({ onSearch }) {
-  return (
-    <div>
-      <input type="text" placeholder="Enter city" />
-      <button onClick={onSearch}>Search</button>
-    </div>
-  );
-}
+const SearchBar = ({ city, setCity, onSearch }) => (
+  <div className="search-container">
+    <input
+      type="text"
+      className="city-input"
+      placeholder="Enter city name"
+      value={city}
+      onChange={(e) => setCity(e.target.value)}
+    />
+    <button className="search-button" onClick={onSearch}>
+      Search
+    </button>
+  </div>
+);
 
 export default SearchBar;
