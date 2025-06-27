@@ -4,6 +4,7 @@ import requests
 import os
 from dotenv import load_dotenv
 import re
+from flask import Flask, send_from_directory
 
 load_dotenv()
 
@@ -85,5 +86,9 @@ def api():
     except requests.exceptions.RequestException:
         return jsonify({"error": f"No weather information found for \"{city}\". Please check the city name and try again with other city name."}), 500
 
+@app.route("/")
+def index():
+    return send_from_directory(app.static_folder, "index.html")
+    
 if __name__ == '__main__':
     app.run(debug=True)
