@@ -20,7 +20,7 @@ def api():
     # Input validation: city must contain only letters (no digits, no spaces)
     if not city:
         return jsonify({"error": "City name is required"}), 400
-        
+
     if not re.match(r"^[A-Za-z]+$", city):
         return jsonify({"error": "City name must contain only letters (no digits or spaces)."}), 400
 
@@ -84,10 +84,6 @@ def api():
         return jsonify({"error": "Weather service timed out. Please try again later."}), 504
     except requests.exceptions.RequestException:
         return jsonify({"error": f"No weather information found for \"{city}\". Please check the city name and try again with other city name."}), 500
-
-@app.route('/', methods=['GET'])
-def home():
-    return jsonify({"message": "Weather API is running"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
