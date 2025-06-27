@@ -9,7 +9,7 @@ const Home = ({ setWeatherData }) => {
 
   const fetchWeather = async () => {
     try {
-      const response = await fetch(`/api`, {
+      const response = await fetch(`http://127.0.0.1:5000/api`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
