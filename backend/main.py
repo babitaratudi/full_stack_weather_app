@@ -86,9 +86,13 @@ def api():
     except requests.exceptions.RequestException:
         return jsonify({"error": f"No weather information found for \"{city}\". Please check the city name and try again with other city name."}), 500
 
-@app.route("/")
-def index():
-    return jsonify({"message": "Weather API is running"}), 200
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_react(path):
+    if path != "" and os.path.exists(os.path.join('static', path)):
+        return send_from_directory('static', path)
+    else:
+        return send_from_directory('static', 'index.html')
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
