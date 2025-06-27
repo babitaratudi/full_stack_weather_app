@@ -14,7 +14,9 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        bat 'docker build -t weather-app .'
+        timeout(time: 30, unit: 'MINUTES') { // Set timeout for this stage
+          bat 'docker build -t weather-app .'
+        }
       }
     }
 
